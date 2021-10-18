@@ -18,14 +18,17 @@ namespace DemoHerradura
             //testing an update.
             BL.updateInsurances(new DemoherraduraComp { Insurancename = "C", Address = "Tecate" });
             DOSelect();
-            Console.ReadLine();
+            Console.WriteLine("Item was updated");
+           Console.ReadLine();
             //testing a delete.
             BL.deleteInsurances(new DemoherraduraComp { Insurancename = "C"});
             DOSelect();
+            Console.WriteLine("Item was deleted");
             Console.ReadLine();
             //testing an insert.
-            BL.insertInsurances(new DemoherraduraComp { Insurancename = "C", Address = "NEW C" });
+            BL.insertInsurances(new DemoherraduraComp { Insurancename = "C", Address = "NEW C" });            
             DOSelect();
+            Console.WriteLine("Item was inserted");
             Console.ReadLine();
         }
 
