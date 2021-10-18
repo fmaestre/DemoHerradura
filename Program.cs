@@ -4,6 +4,7 @@ using Herradura.Lib.Portal.DAL;
 using System.Data;
 using Herradura.Lib.core;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace DemoHerradura
 {
@@ -11,18 +12,63 @@ namespace DemoHerradura
     {
         static void Main(string[] args)
         {
-            var l = new Program().getInsurances(new DemoherraduraComp { Insurancename = "" });
-
-            Console.WriteLine("Test completed successfully {0}",l.Count);
+            //testing a select.
+            DOSelect();
+            Console.ReadLine();
+            //testing an update.
+            BL.updateInsurances(new DemoherraduraComp { Insurancename = "C", Address = "Tecate" });
+            DOSelect();
+            Console.ReadLine();
+            //testing a delete.
+            BL.deleteInsurances(new DemoherraduraComp { Insurancename = "C"});
+            DOSelect();
+            Console.ReadLine();
+            //testing an insert.
+            BL.insertInsurances(new DemoherraduraComp { Insurancename = "C", Address = "NEW C" });
+            DOSelect();
             Console.ReadLine();
         }
-        public System.Collections.Generic.List<DemoherraduraComp> getInsurances(DemoherraduraComp comp)
+
+        static void DOSelect()
+        {
+            var l =  BL.getInsurances(new DemoherraduraComp { Insurancename = "" });
+            foreach (var i in l) {
+                Console.WriteLine(string.Format("Test completed successfully {0}-{1}", i.Insurancename, i.Address));
+            }
+        }
+
+
+
+    }
+
+
+    public static class BL
+    {
+        public static List<DemoherraduraComp> getInsurances(DemoherraduraComp comp)
         {            
             comp.Insurancename = comp.Insurancename.add_like(); 
             var x = PortalData.GenericDAL.getList(comp);
             return x.OrderBy(z => z.Insurancename).ToList();
         }
+        public static void updateInsurances(DemoherraduraComp comp)
+        {
+
+            PortalData.GenericDAL.updateItem(comp);            
+        }
+        public static void deleteInsurances(DemoherraduraComp comp)
+        {
+
+            PortalData.GenericDAL.DeleteItemWithPK(comp);
+        }
+        public static void insertInsurances(DemoherraduraComp comp)
+        {
+      
+            PortalData.GenericDAL.insertItem(comp);
+        }
+
     }
+
+
 
     public static class PortalData
     {
@@ -55,6 +101,7 @@ namespace DemoHerradura
                 this.firePropertyChange("Insurancename");
             }
         }
+        [Field("Address", "Address", false, enmDataTypes.stringType, true, true)]
         public string Address
         {
             get { return _address; }
